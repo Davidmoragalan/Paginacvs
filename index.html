@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CV 3D Animado — Tu Nombre</title>
+  <meta name="description" content="Currículum animado con avatar 3D estilizado" />
+  <style>
+    :root{
+      --bg:#071224; --card:#0f1624; --accent:#06b6d4; --accent2:#7c3aed; --muted:#9fb0c8;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto;color:#e6f0f8;background:
+      radial-gradient(1000px 600px at 10% 10%, rgba(7,18,36,0.6), transparent),
+      radial-gradient(800px 500px at 90% 90%, rgba(30,8,50,0.45), transparent),
+      var(--bg);-webkit-font-smoothing:antialiased}
+    .wrap{min-height:100vh;display:grid;place-items:center;padding:40px}
+    .stage{width:min(1100px,96%);display:grid;grid-template-columns:420px 1fr;gap:28px;perspective:1400px}
+    @media (max-width:920px){ .stage{grid-template-columns:1fr} }
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:24px;transform-style:preserve-3d;transition:transform 0.18s ease-out;box-shadow:0 20px 60px rgba(2,6,23,0.6);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+    .left{min-height:540px;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:flex-start;padding-top:28px}
+    .avatar-wrap{width:320px;height:320px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:grid;place-items:center;box-shadow:inset 0 1px rgba(255,255,255,0.02);overflow:visible;transform:translateZ(40px)}
+    .avatar-wrap svg{width:280px;height:280px;display:block;transition:transform 0.3s ease-out;filter:drop-shadow(0 30px 50px rgba(2,6,23,0.6))}
+    h1{margin:10px 0 2px;font-size:22px}
+    h2{margin:0;font-size:14px;color:var(--muted)}
+    .contact{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.6;text-align:center}
+    .cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#04121a;text-decoration:none;font-weight:700}
+    .right{padding:18px}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:12px;color:var(--muted)}
+    .job{padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));margin-top:10px}
+    .bars{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+    .bar{height:12px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden}
+    .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 1s cubic-bezier(.22,.9,.15,1)}
+    .card.ready .bar > i{width:90%}
+    footer{color:var(--muted);font-size:13px;margin-top:8px}
+
+    /* Animated tiny motions for avatar */
+    @keyframes bob {
+      0%{ transform: translateY(0) rotateX(0deg) }
+      50%{ transform: translateY(-8px) rotateX(1deg) }
+      100%{ transform: translateY(0) rotateX(0deg) }
+    }
+    /* glow pulse */
+    @keyframes pulse {
+      0%{ opacity:0.16; transform: scale(1) }
+      50%{ opacity:0.28; transform: scale(1.03) }
+      100%{ opacity:0.16; transform: scale(1) }
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:640px){
+      .avatar-wrap{width:240px;height:240px}
+      .avatar-wrap svg{width:200px;height:200px}
+    }
+
+    /* animate accents inside the svg via CSS targeting */
+    svg #accents rect,
+    svg #accents circle {
+      transform-origin: center;
+      animation: floatSmall 4.5s ease-in-out infinite;
+    }
+    @keyframes floatSmall {
+      0%{ transform: translateY(0) }
+      50%{ transform: translateY(-10px) }
+      100%{ transform: translateY(0) }
+    }
+
+    /* make the avatar slightly rotate on hover (desktop) */
+    .avatar-wrap:hover svg { transform: rotateY(8deg) rotateX(6deg) translateZ(8px) }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="stage" id="stage">
+      <div class="card left" id="card">
+        <div class="avatar-wrap" id="avatarWrap">
+          <!-- External SVG avatar file -->
+          <object type="image/svg+xml" data="assets/avatar.svg" id="avatarObj" aria-label="Avatar 3D estilizado"></object>
+        </div>
+
+        <h1 id="name">Tu Nombre Apellido</h1>
+        <h2 id="role">Desarrollador Web · Diseñador UI</h2>
+
+        <div class="contact">
+          <div id="location">📍 Ciudad, País</div>
+          <div id="email">✉️ <a href="mailto:tucorreo@example.com">tucorreo@example.com</a></div>
+          <div id="portfolio">🔗 <a href="#">tu-portfolio.com</a></div>
+        </div>
+
+        <a class="cta" id="download" href="#">Descargar CV</a>
+      </div>
+
+      <div class="card right">
+        <section>
+          <div class="pill">Resumen</div>
+          <div class="job">
+            <p id="summary">Profesional con experiencia en creación de interfaces 3D y animadas, enfocado en rendimiento y accesibilidad. Construyo experiencias interactivas que funcionan en móviles y escritorio.</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="pill">Experiencia</div>
+          <div class="job">
+            <h3>Desarrollador Frontend — Empresa S.A.</h3>
+            <div class="meta">Feb 2022 — Presente</div>
+            <p>Construcción de SPAs, microinteracciones y optimización para accesibilidad.</p>
+          </div>
+
+          <div class="job">
+            <h3>Diseñador UI — Agencia</h3>
+            <div class="meta">Jul 2019 — Ene 2022</div>
+            <p>Prototipado, diseño visual y creación de paquetes de iconografía.</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="pill">Habilidades</div>
+          <div class="bars">
+            <div class="bar"><i style="width:0%"></i></div>
+            <div class="bar"><i style="width:0%"></i></div>
+            <div class="bar"><i style="width:0%"></i></div>
+          </div>
+        </section>
+
+        <footer>Consejo: edita los textos en index.html y sube todo a GitHub como <code>index.html</code> en el repo para publicarlo con GitHub Pages.</footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Parallax / tilt effect for desktop
+    const stage = document.getElementById('stage');
+    const card = document.getElementById('card');
+    const avatarWrap = document.getElementById('avatarWrap');
+
+    function handleMove(e){
+      const rect = stage.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const rx = (dy / rect.height) * 8;
+      const ry = (dx / rect.width) * -8;
+      // apply to left card
+      card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+      avatarWrap.style.transform = `translateZ(30px) rotateX(${rx*0.6}deg) rotateY(${ry*0.6}deg)`;
+    }
+    function handleLeave(){
+      card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      avatarWrap.style.transform = 'translateZ(0)';
+    }
+
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseleave', handleLeave);
+
+    // touch support
+    window.addEventListener('touchmove', function(e){
+      if(e.touches && e.touches[0]) handleMove(e.touches[0]);
+    });
+
+    // animate skill bars on load
+    window.addEventListener('load', ()=>{
+      document.querySelector('.card').classList.add('ready');
+      const bars = document.querySelectorAll('.bar > i');
+      const values = ['92%','80%','72%'];
+      bars.forEach((b,i)=> setTimeout(()=> b.style.width = values[i], 300 + i*180));
+      // small bob animation for avatar container
+      avatarWrap.style.animation = 'bob 5s ease-in-out infinite';
+      // fade in file object by scaling it slightly (works in modern browsers)
+      const obj = document.getElementById('avatarObj');
+      obj.style.opacity = 0;
+      setTimeout(()=>{ obj.style.transition = 'opacity 600ms ease'; obj.style.opacity = 1; }, 200);
+    });
+
+    // download (print) button
+    document.getElementById('download').addEventListener('click', function(e){
+      e.preventDefault();
+      window.print();
+    });
+  </script>
+</body>
+</html>
